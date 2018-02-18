@@ -248,3 +248,30 @@ systask command "&_s -termstmt %nrstr(%utl_hshTsk(2005);) -log d:\log\a5.log" ta
 waitfor sys1 sys2 sys3 sys4  sys5;
 
 
+
+*                  _
+ _ __   __ _ _   _| |
+| '_ \ / _` | | | | |
+| |_) | (_| | |_| | |
+| .__/ \__,_|\__,_|_|
+|_|
+;
+
+
+Roger,
+
+Thanks for doing that.
+
+Note that the crux of the matter here is using the RID instead of overloading the hash
+data portion with a slew of satellite variables and using POINT=RID downstream. Privately,
+I call it "data portion disk offloading" (first overtly proposed, IIRC, at SUGI 31 in SF).
+
+As far as the MD5 goes, it works really well when you have a truly long mixed-type composite
+key. In this case, with 6 numeric hash variables per hash item, it cuts the hash memory
+footprint somewhat, too, but only by 16 bytes per item (80 bytes against 64 under X64_7PRO).
+Which is why methinks it may run faster if you simply include the
+keys in the key portion and match on them, t
+hereby getting rid of the CATX+MD5 overhead.
+
+Best regards
+
